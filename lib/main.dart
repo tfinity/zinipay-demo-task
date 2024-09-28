@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:zini_pay_demo/core/router.dart';
 import 'package:zini_pay_demo/core/theme.dart';
+import 'package:zini_pay_demo/screens/home_screen.dart';
 import 'package:zini_pay_demo/screens/login_screen.dart';
 import 'package:zini_pay_demo/services/Auth_service.dart';
 
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
       title: 'ZiniPay Demo',
       theme: AppTheme.theme,
       navigatorKey: AppRouter.navigatorKey,
-      home: const LoginScreen(),
+      home: isAuthorized ? const HomeScreen() : const LoginScreen(),
     );
   }
 }
