@@ -17,6 +17,12 @@ import workmanager
             // This will make other plugins available during a background operation.
             GeneratedPluginRegistrant.register(with: registry)
         }
+        FlutterLocalNotificationsPlugin.setPluginRegistrantCallback { (registry) in
+        GeneratedPluginRegistrant.register(with: registry)
+        }
+         if #available(iOS 10.0, *) {
+          UNUserNotificationCenter.current().delegate = self as UNUserNotificationCenterDelegate
+        }
 
         WorkmanagerPlugin.registerBGProcessingTask(withIdentifier: "sms-sync")
 

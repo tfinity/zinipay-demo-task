@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:zini_pay_demo/core/colors.dart';
 import 'package:zini_pay_demo/core/extensions.dart';
 import 'package:zini_pay_demo/core/strings.dart';
@@ -85,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _toggleSync() async {
     _toggleLoading();
-
+    await checkNotificationPermission();
     if (_isSyncing) {
       await BackgroundService.stopService();
     } else {
@@ -101,5 +104,25 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _isLoading = !_isLoading;
     });
+  }
+
+  Future<void> checkNotificationPermission() async {
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+        FlutterLocalNotificationsPlugin();
+    if (Platform.isAndroid) {
+      await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
+          ?.requestNotificationsPermission();
+    } else {
+      await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+              IOSFlutterLocalNotificationsPlugin>()
+          ?.requestPermissions(
+            alert: true,
+            badge: true,
+            sound: true,
+          );
+    }
   }
 }
